@@ -1,0 +1,53 @@
+# IDE and Editor files
+.vscode/
+.vs/
+.idea/
+*.suo
+*.csproj
+*.user
+*.sln
+*.sln.docstates
+
+# Build outputs and binaries
+bin/
+obj/
+Debug/
+Release/
+*.exe
+*.dll
+*.pdb
+*.cache
+
+# Temporary files
+[Tt]emp/
+*.tmp
+*.log
+*.bak
+
+# Dependencies and packages
+packages/
+node_modules/
+vendor/
+
+# User-specific files
+*.userprefs
+*.config.user
+
+# System Files
+.DS_Store
+Thumbs.db
+
+# Environment files
+.env
+.env.local
+*.env.*
+
+# Compiled files
+*.com
+*.class
+*.o
+*.so
+
+# Test coverage
+coverage/
+TestResults/
