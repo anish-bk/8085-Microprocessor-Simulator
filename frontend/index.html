@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Microprocessor Simulator</title>
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 font-sans leading-normal tracking-normal">
+
+  <main class="grid grid-cols-1 lg:grid-cols-3 gap-6 p-6">
+    <!-- Program Editor -->
+    <section class="lg:col-span-2 bg-white rounded-lg shadow-md p-6">
+      <div class="flex justify-between items-center mb-4">
+        <h2 class="text-xl font-semibold text-gray-800">
+          <i class="fas fa-code mr-2"></i>Program Editor
+        </h2>
+        <div class="flex space-x-2">
+          <button id="runBtn" class="bg-green-500 hover:bg-green-600 text-white font-bold py-1 px-4 rounded text-sm"><i class="fas fa-play mr-1"></i>Run</button>
+          <button id="stepBtn" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-1 px-4 rounded text-sm"><i class="fas fa-step-forward mr-1"></i>Step</button>
+          <button id="resetBtn" class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-1 px-4 rounded text-sm"><i class="fas fa-undo mr-1"></i>Reset</button>
+        </div>
+      </div>
+
+      <label class="block text-sm mb-2">Memory Start Address:</label>
+      <input type="text" id="startAddress" value="2000" class="border border-gray-300 rounded px-2 py-1 w-24 mb-4"/>
+
+      <table class="table-auto w-full mb-2 border">
+        <thead>
+          <tr class="bg-gray-200">
+            <th class="px-4 py-2">Address</th>
+            <th class="px-4 py-2">Hex Code</th>
+            <th class="px-4 py-2">Mnemonic</th>
+          </tr>
+        </thead>
+        <tbody id="codeTable">
+          <tr class="code-line">
+            <td class="memory-address px-4 py-2">2000</td>
+            <td class="px-4 py-2"><input class="hex-code border rounded w-20 px-1 py-0.5"/></td>
+            <td class="mnemonic px-4 py-2">-</td>
+          </tr>
+        </tbody>
+      </table>
+      <button id="addRowBtn" class="text-blue-600 text-sm"><i class="fas fa-plus mr-1"></i>Add Instruction</button>
+    </section>
+
+    <!-- Registers & Flags -->
+    <aside class="bg-white rounded-lg shadow-md p-6">
+      <h2 class="text-xl font-semibold text-gray-800 mb-4">
+        <i class="fas fa-registered mr-2"></i>Registers & Flags
+      </h2>
+      <div class="grid grid-cols-2 gap-4 mb-6">
+        <div class="register bg-blue-50 p-3 rounded-lg border border-blue-200" id="A">
+          <div class="text-xs font-medium text-blue-800 mb-1">A</div>
+          <div class="text-xl font-bold text-center">00</div>
+        </div>
+        <div class="register bg-green-50 p-3 rounded-lg border border-green-200" id="B">
+          <div class="text-xs font-medium text-green-800 mb-1">B</div>
+          <div class="text-xl font-bold text-center">00</div>
+        </div>
+        <div class="register bg-green-50 p-3 rounded-lg border border-green-200" id="C">
+          <div class="text-xs font-medium text-green-800 mb-1">C</div>
+          <div class="text-xl font-bold text-center">00</div>
+        </div>
+        <div class="register bg-purple-50 p-3 rounded-lg border border-purple-200" id="D">
+          <div class="text-xs font-medium text-purple-800 mb-1">D</div>
+          <div class="text-xl font-bold text-center">00</div>
+        </div>
+        <div class="register bg-purple-50 p-3 rounded-lg border border-purple-200" id="E">
+          <div class="text-xs font-medium text-purple-800 mb-1">E</div>
+          <div class="text-xl font-bold text-center">00</div>
+        </div>
+        <div class="register bg-red-50 p-3 rounded-lg border border-red-200" id="H">
+          <div class="text-xs font-medium text-red-800 mb-1">H</div>
+          <div class="text-xl font-bold text-center">00</div>
+        </div>
+        <div class="register bg-red-50 p-3 rounded-lg border border-red-200" id="L">
+          <div class="text-xs font-medium text-red-800 mb-1">L</div>
+          <div class="text-xl font-bold text-center">00</div>
+        </div>
+      </div>
+      <div class="grid grid-cols-2 gap-4 mb-6">
+        <div class="register bg-indigo-50 p-3 rounded-lg border border-indigo-200" id="PC">
+          <div class="text-xs font-medium text-indigo-800 mb-1">PC</div>
+          <div class="text-xl font-bold text-center">2000</div>
+        </div>
+        <div class="register bg-indigo-50 p-3 rounded-lg	border border-indigo-200" id="SP">
+          <div class="text-xs font-medium text-indigo-800 mb-1">SP</div>
+          <div class="text-xl font-bold text-center">FFFF</div>
+        </div>
+      </div>
+      <div class="status-box">
+        <div class="text-xs font-medium text-gray-800 mb-1">Status</div>
+        <div id="statusMessage" class="text-sm">Ready to execute program</div>
+      </div>
+    </aside>
+
+    <!-- Memory Table -->
+    <section class="lg:col-span-3 bg-white rounded-lg shadow-md p-6">
+      <h2 class="text-xl font-semibold text-gray-800 mb-4">
+        <i class="fas fa-memory mr-2"></i>Memory
+      </h2>
+      <div class="overflow-x-auto max-h-64">
+        <table class="table-auto w-full border">
+          <thead class="bg-gray-200">
+            <tr>
+              <th class="px-4 py-2">Address</th>
+              <th class="px-4 py-2">Value</th>
+            </tr>
+          </thead>
+          <tbody id="memoryTable">
+            <!-- Filled dynamically via JavaScript -->
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
